@@ -1,16 +1,31 @@
-language: go
-go:
-- master
-install:
-- go get -t github.com/spf13/hugo
-- pip install --user awscli
-script:
-- hugo version
-- make deploy
-branches:
-  only:
-  - production
-env:
-  global:
-  - secure: rrlpAU9ETpTQZPU/0nnIbM6EC6idcX0AaM2nRP7IbmobR9hvSC9sTBH7xcISg73EKjUrwJyKNc5WMKBgXpl7LDu+1Nzr7WFzTpiRN1I2Fc/JY+GT9vlI+9OZKL+GwLBX3nm9LRwWqvZHgnUTzzt+dE58W79yCcFvN3jwovxWoCA7wb0LoGuAxdvdFHeEadTEzKZw72D0IdJuu3UA5eajrTCH39PjyTzHKlIk89+U0iQ4wxNK2mVxvN+XMKgcyppyH7mQn4PZmJJdEjaTK2EofWN16vCLYPGnVZKsFvRyTXVeqRGhVBK6lk1Xr4eLS3olhLDYDCYRuiAyydpwX2jZIrOhPQ4WQd4984TCNLp3dKeNN2FVGxaCD4fNm4GWUA2T9sJ7FX6yTF0aZ5TDao4hBWzy+oXSoSR3u+Py1Z2SUd6gBEcITu/3yEA+oME0EnqLoYZM7X9/kjSnlx+wXlbDD9eQFcxPip/Ecv4lEabdFvUKKXZLgnlWx02mlzL7C6CId/6ofh//S3Mf7/LBkRjVot1BtnrhwZsOoTbBTn0325TFbHgTYlDlzi8Y6pzcVquQYobYgDFTwcgFC8pOY5nceTZ30FxqKGx5Jck4TBs3/2vihK60fJmMo0TvGVK0bBjCD+a9lNmPSxfECZTE8OsNxcM8VkwP+udbWvGaPqdSb4Q=
-  - secure: DKUt5xaELcBnjlTYWhDe+SuEYBDAxHgu+AiMQ294S0JzXco+xbYa8aOPZLAWFqWliLiKSYdtyWI0CCtOWcoMD/bF55o6pBdT7qBUKUOoywdva1mwDxcqSb2LQaU0C9JNUF5MmQ1xGxULZ2lgGgfE3jtEa9BRv8zTASAceAjwSi+HKRPmTuBIsCxlrnlRu5lo1PHYvzF1Wd0inYVU+Ec7xueDs7313PZyV9u4NeNuFGKYPbpKQyE+E3BXBU5pzhJcNmUC0WWYkIWAz8Fywtg6B6n5q27r262Dxpeazx6IsZF2t6hblhPdHzRuV0Fg8kQ0EYRD6syrRP3Qjfppa6xbN0bDCOLpEDfmxmndxyy22AvRwQQm8MKBXqDlkjQBu13fPycSnz4xuFbOCzmSS33EBqK8hJKIWsioSRGQXdT/InsNPse2UiMm8f8tZMPUKN67Zou2jSG4SloMQqL4xhGOsosfDR5+T1nbkPnhlamdqF4vGJ03+PfBWfDEl9iF8PpUuqcGGk5wnhlFJK5asWmv+nIIOo/Iz98mY/cno6HWkTn0XlU8K+EdW0q9CcvQlzLw8w7DEMl5/XHGgbQk3VCaY+FEZeJOiaWViXcvkXui4gU+uOG/xR1gQqKmcFIC+aELj3gzYAxgcZ+BoLTppf8D7DSTlOBcyHkGXxOtJtVbsJc=
+[build]
+publish = "public"
+command = "hugo --gc --minify"
+
+[context.production.environment]
+HUGO_VERSION = "0.82.0"
+HUGO_ENV = "production"
+HUGO_ENABLEGITINFO = "true"
+
+[context.split1]
+command = "hugo --gc --minify --enableGitInfo"
+
+[context.split1.environment]
+HUGO_VERSION = "0.82.0"
+HUGO_ENV = "production"
+
+[context.deploy-preview]
+command = "hugo --gc --minify --buildFuture -b $DEPLOY_PRIME_URL"
+
+[context.deploy-preview.environment]
+HUGO_VERSION = "0.82.0"
+
+[context.branch-deploy]
+command = "hugo --gc --minify -b $DEPLOY_PRIME_URL"
+
+[context.branch-deploy.environment]
+HUGO_VERSION = "0.82.0"
+
+[context.next.environment]
+HUGO_ENABLEGITINFO = "true"
+
